@@ -3,6 +3,7 @@ package com.example.sms
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.telephony.SmsManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -26,13 +27,38 @@ class MainActivity : AppCompatActivity() {
         sendButton = findViewById(R.id.button)
 
         sendButton.setOnClickListener {
-            Toast.makeText(this, "Sending message...", Toast.LENGTH_SHORT).show()
+            if (checkSelfPermission(android.Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
+                sendSms()
+            } else {
+                if (shouldShowRequestPermissionRationale(android.Manifest.permission.SEND_SMS)) {
+                    Toast.makeText(this, "Permission required to send a SMS", Toast.LENGTH_SHORT).show()
+                }
+                requestPermissions(arrayOf(android.Manifest.permission.SEND_SMS), PERMISSIONS_REQUEST_SEND_SMS)
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            PERMISSIONS_REQUEST_SEND_SMS -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    sendSms()
+                } else {
+                    Toast.makeText(this, "Permission denied. Not able to send SMS", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun sendSms() {
+        try {
+            val smsManager = applicationContext.getSystemService(SmsManager::class.java)
+            smsManager.sendTextMessage(phoneNumber.text.toString(), null, message.text.toString(), null, null)
+            message.setText("")
+            Toast.makeText(this, "Successfully sent SMS", Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Toast.makeText(this, "Failed to send SMS", Toast.LENGTH_SHORT).show()
         }
     }
 }
-
-// ToDo
-// checkSelfPermission
-// requestPermissions
-// shouldShowRequestPermissionRationale
-// onRequestPermissionsResult
