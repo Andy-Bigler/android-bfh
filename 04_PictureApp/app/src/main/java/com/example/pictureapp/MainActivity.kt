@@ -21,16 +21,11 @@ class MainActivity : AppCompatActivity() {
         button = findViewById(R.id.takePicture)
         imageView = findViewById(R.id.imageView)
 
-        // ToDo handle everything with permissions
-        button.setOnClickListener {
-            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            cameraLauncher.launch(intent)
-        }
+        button.setOnClickListener { cameraLauncher.launch(Intent(MediaStore.ACTION_IMAGE_CAPTURE)) }
     }
 
     private val cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            // ToDo Correctly display result
             val imageBitmap = result.data?.extras?.get("data") as Bitmap
             imageView.setImageBitmap(imageBitmap)
         }
