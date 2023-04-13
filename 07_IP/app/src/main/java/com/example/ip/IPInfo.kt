@@ -6,7 +6,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class IPInfo(
     @Json(name = "ip") val ip: String,
-    @Json(name = "hostname") val hostname: String,
+    @Json(name = "hostname") val hostname: String? = null,
     @Json(name = "city") val city: String,
     @Json(name = "region") val region: String,
     @Json(name = "country") val country: String,
@@ -14,7 +14,7 @@ data class IPInfo(
     @Json(name = "org") val org: String,
     @Json(name = "postal") val postal: String,
     @Json(name = "timezone") val timezone: String,
-    @Json(name = "readme") val readme: String
+    @Json(name = "readme") val readme: String? = null
 ) {
     override fun toString(): String {
         return "IP: $ip\n" +
