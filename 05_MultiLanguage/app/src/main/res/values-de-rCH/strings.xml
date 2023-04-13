@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Mehrsprachige App</string>
+    <string name="play">Abspielen</string>
+    <string name="pause">Pausieren</string>
+</resources>
