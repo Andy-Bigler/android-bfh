@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Broadcast</string>
+    <string name="battery_status">Battery Status: …</string>
+    <string name="power_connection">Power Connection: …</string>
+</resources>
