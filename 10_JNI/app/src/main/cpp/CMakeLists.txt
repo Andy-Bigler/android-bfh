@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.22.1)
 project("jni")
 
 add_library(
-        jni
+        native-lib
         SHARED
         native-lib.cpp)
 
@@ -39,7 +39,7 @@ set_target_properties(
 include_directories(${openssl_DIR}/include)
 
 target_link_libraries(
-        jni
+        native-lib
         ${log-lib}
         libssl
         libcrypto)
