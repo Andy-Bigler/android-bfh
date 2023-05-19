@@ -1,5 +1,6 @@
 package com.example.library.service
 
+import android.annotation.SuppressLint
 import android.content.Context
 import com.example.library.dal.JsonDb
 import com.example.library.model.Book
@@ -20,16 +21,25 @@ class BookService(private val context: Context) {
 
     fun loadBooks(status: Status? = null): List<Book> {
         val json = JsonDb.loadJson(context)
+        if (json.isBlank()) {
+            return emptyList()
+        }
         if (status == null) {
             return adapter.fromJson(json) ?: emptyList()
         }
-        return adapter.fromJson(json)?.filter { it -> it.status == status }?.reversed() ?: emptyList()
+        return adapter.fromJson(json)?.filter { it.status == status }?.reversed() ?: emptyList()
     }
 
     fun saveBook(book: Book) {
-        val books = loadBooks().toMutableList()
+        val loadedBooks = loadBooks()
         book.id = getNextId()
-        books.add(book)
+        val books = if (loadedBooks.isEmpty()) {
+            listOf(book)
+        } else {
+            loadedBooks.toMutableList().apply {
+                add(book)
+            }
+        }
         val json = adapter.toJson(books)
         JsonDb.saveJson(context, json)
     }
@@ -62,6 +72,16 @@ class BookService(private val context: Context) {
     fun getBook(id: Int): Book? {
         val books = loadBooks()
         return books.find { it.id == id }
+    }
+
+    @SuppressLint("CheckResult")
+    fun checkIfJsonIsValid(json: String): Boolean {
+        return try {
+            adapter.fromJson(json)
+            true
+        } catch (e: Exception) {
+            false
+        }
     }
 
     private fun getNextId(): Int {

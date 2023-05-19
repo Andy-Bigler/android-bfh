@@ -9,10 +9,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import com.example.library.MainActivity
+import com.example.library.R
 import com.example.library.databinding.FragmentAddEditBinding
 import com.example.library.model.Book
 import com.example.library.model.Status
-import java.util.Date
 
 
 class AddEditFragment : Fragment() {
@@ -36,7 +36,7 @@ class AddEditFragment : Fragment() {
         bookId = bundle?.getInt("bookId")
 
         if (bookId == null) {
-            mainActivity.supportActionBar?.title = "Add new book"
+            mainActivity.supportActionBar?.title = getString(R.string.title_add_new_book)
             binding.fabDeleteBook.visibility = View.GONE
         }
 
@@ -71,14 +71,14 @@ class AddEditFragment : Fragment() {
                     mainActivity.bookService.saveBook(Book(title, author, status, notes, owned, audioBook))
                     Toast.makeText(
                         mainActivity,
-                        "Book saved",
+                        getString(R.string.toast_book_saved),
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
                     mainActivity.bookService.updateBook(Book(title, author, status, notes, owned, audioBook, id = bookId!!))
                     Toast.makeText(
                         mainActivity,
-                        "Book updated",
+                        getString(R.string.toast_book_updated),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -86,7 +86,7 @@ class AddEditFragment : Fragment() {
             } else {
                 Toast.makeText(
                     mainActivity,
-                    "Please enter a title and author",
+                    getString(R.string.toast_please_enter_a_title_and_author),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -96,7 +96,7 @@ class AddEditFragment : Fragment() {
             mainActivity.bookService.deleteBook(bookId!!)
             Toast.makeText(
                 mainActivity,
-                "Book deleted",
+                getString(R.string.toast_book_deleted),
                 Toast.LENGTH_SHORT
             ).show()
             NavHostFragment.findNavController(this).navigateUp();

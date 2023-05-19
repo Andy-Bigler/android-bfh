@@ -12,4 +12,14 @@
     <string name="label_owned">Owned</string>
     <string name="label_audiobook">Audiobook</string>
     <string name="label_notes">Notes:</string>
+    <string name="export_json">Export JSON</string>
+    <string name="import_json">Import JSON</string>
+    <string name="toast_book_saved">Book saved</string>
+    <string name="toast_book_updated">Book updated</string>
+    <string name="toast_please_enter_a_title_and_author">Please enter a title and author</string>
+    <string name="toast_book_deleted">Book deleted</string>
+    <string name="title_add_new_book">Add new book</string>
+    <string name="toast_imported_successfully">Imported successfully</string>
+    <string name="toast_invalid_json">Invalid JSON</string>
+    <string name="toast_exported_successfully">Exported successfully</string>
 </resources>
