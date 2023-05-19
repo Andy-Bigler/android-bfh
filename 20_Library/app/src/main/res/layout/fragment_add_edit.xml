@@ -14,13 +14,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingHorizontal="16dp"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="16dp"
+            android:paddingBottom="32dp">
             <TextView
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:labelFor="@+id/editTextTitle"
-                android:text="Title:" />
+                android:text="@string/label_title" />
             <EditText
                 android:id="@+id/editTextTitle"
                 android:layout_width="match_parent"
@@ -32,12 +33,44 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:labelFor="@+id/editTextAuthor"
-                android:text="Author:" />
+                android:text="@string/label_author" />
             <EditText
                 android:id="@+id/editTextAuthor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
+                android:importantForAutofill="no" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:labelFor="@+id/statusSpinner"
+                android:text="@string/label_status"/>
+            <Spinner
+                android:id="@+id/statusSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <CheckBox
+                android:id="@+id/checkBoxOwned"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_owned" />
+            <CheckBox
+                android:id="@+id/checkBoxAudioBook"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_audiobook" />
+            <TextView
+                android:id="@+id/format"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:labelFor="@+id/editTextNotes"
+                android:text="@string/label_notes" />
+            <EditText
+                android:id="@+id/editTextNotes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:maxLines="30"
                 android:importantForAutofill="no" />
             <Button
                 android:id="@+id/saveButton"
@@ -46,7 +79,7 @@
                 android:layout_gravity="start|bottom"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:text="Save" />
+                android:text="@string/button_save" />
         </LinearLayout>
     </ScrollView>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -57,5 +90,5 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         app:srcCompat="@drawable/ic_trash_solid"
-        android:contentDescription="Delete the book" />
+        android:contentDescription="@string/accessibility_delete_the_current_book" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

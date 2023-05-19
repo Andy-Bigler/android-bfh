@@ -13,6 +13,7 @@ import com.example.library.R
 import com.example.library.adapter.BookAdapter
 import com.example.library.adapter.OnItemClickListener
 import com.example.library.databinding.FragmentReadingBinding
+import com.example.library.model.Status
 
 class ReadingFragment : Fragment(), OnItemClickListener {
 
@@ -35,7 +36,7 @@ class ReadingFragment : Fragment(), OnItemClickListener {
 
         recyclerView = binding.root.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        adapter = BookAdapter(mainActivity.bookService.loadBooks(), this)
+        adapter = BookAdapter(mainActivity.bookService.loadBooks(Status.READING), this)
         recyclerView.adapter = adapter
 
         binding.fabAddBook.setOnClickListener {

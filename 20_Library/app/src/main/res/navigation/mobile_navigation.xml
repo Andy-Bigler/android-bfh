@@ -19,13 +19,21 @@
         android:id="@+id/navigation_read"
         android:name="com.example.library.ui.read.ReadFragment"
         android:label="@string/title_read"
-        tools:layout="@layout/fragment_read" />
+        tools:layout="@layout/fragment_read">
+        <action
+            android:id="@+id/action_add_book"
+            app:destination="@id/navigation_add_edit_book" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_want_to_read"
         android:name="com.example.library.ui.wantToRead.WantToReadFragment"
         android:label="@string/title_want_to_read"
-        tools:layout="@layout/fragment_want_to_read" />
+        tools:layout="@layout/fragment_want_to_read">
+        <action
+            android:id="@+id/action_add_book"
+            app:destination="@id/navigation_add_edit_book" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_add_edit_book"

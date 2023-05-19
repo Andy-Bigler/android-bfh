@@ -3,6 +3,7 @@ package com.example.library.service
 import android.content.Context
 import com.example.library.dal.JsonDb
 import com.example.library.model.Book
+import com.example.library.model.Status
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
@@ -17,9 +18,12 @@ class BookService(private val context: Context) {
         val adapter: JsonAdapter<List<Book>> = moshi.adapter(listType)
     }
 
-    fun loadBooks(): List<Book> {
+    fun loadBooks(status: Status? = null): List<Book> {
         val json = JsonDb.loadJson(context)
-        return adapter.fromJson(json) ?: emptyList()
+        if (status == null) {
+            return adapter.fromJson(json) ?: emptyList()
+        }
+        return adapter.fromJson(json)?.filter { it -> it.status == status }?.reversed() ?: emptyList()
     }
 
     fun saveBook(book: Book) {
@@ -36,6 +40,10 @@ class BookService(private val context: Context) {
         if (index != -1) {
             books[index].title = book.title
             books[index].author = book.author
+            books[index].status = book.status
+            books[index].owned = book.owned
+            books[index].audioBook = book.audioBook
+            books[index].notes = book.notes
             val json = adapter.toJson(books)
             JsonDb.saveJson(context, json)
         }
