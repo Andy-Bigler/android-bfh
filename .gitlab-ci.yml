@@ -1,0 +1,101 @@
+image: azul/zulu-openjdk:17
+
+stages:
+  - test
+  - build
+
+workflow:
+  rules:
+    # only run merge request pipeline
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    # on main, run branch pipeline
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    # run tag pipelines
+    - if: $CI_COMMIT_TAG
+
+variables:
+  # only used for gitlab package registry
+  BUILD_VERSION: 1.0.0
+
+  # Disable the Gradle daemon for Continuous Integration servers as correctness
+  # is usually a priority over speed in CI environments. Using a fresh
+  # runtime for each build is more reliable since the runtime is completely
+  # isolated from any previous builds.
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+
+  ANDROID_COMPILE_SDK: "31"
+  ANDROID_BUILD_TOOLS: "29.0.3"
+  ANDROID_SDK_TOOLS: "8512546"
+  ANDROID_HOME: "/android-home"
+
+# install android cmdline-tools & sdkmanager
+before_script:
+  - export PATH=$PATH:${ANDROID_HOME}/cmdline-tools/tools/bin/
+  - apt-get --quiet update --yes
+  - apt-get --quiet install --yes wget unzip curl
+  - mkdir -p ${ANDROID_HOME}
+  - wget --output-document=${ANDROID_HOME}/cmdline-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_TOOLS}_latest.zip
+  - cd ${ANDROID_HOME}
+  - unzip -d cmdline-tools cmdline-tools.zip
+  - rm cmdline-tools.zip
+  - cd cmdline-tools
+  - mv cmdline-tools tools || true
+  - sdkmanager --version
+  - yes | sdkmanager --licenses || true
+  - sdkmanager "platforms;android-${ANDROID_COMPILE_SDK}"
+  - sdkmanager "platform-tools"
+  - sdkmanager "build-tools;${ANDROID_BUILD_TOOLS}"
+  - cd ${CI_PROJECT_DIR}/20_Library
+  - echo ${KEYSTORE_BASE64} | base64 -d > app/library.keystore
+
+# check linting
+lintDebug:
+  stage: build
+  script:
+    - ./gradlew -Pci --console=plain :app:lintDebug -PbuildDir=lint
+  rules:
+    # runs only on feature branch (!tag)
+    - if: '$CI_COMMIT_TAG =~ "/^$/" && $CI_COMMIT_REF_NAME !~ "/^main$/"'
+      changes:
+        - 20_Library/**/*
+
+# create release apk & upload to gitlab package registry
+assembleRelease:
+  stage: build
+  script:
+    - ./gradlew assembleRelease
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file app/build/outputs/apk/release/app-release.apk "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/library/${BUILD_VERSION}/library-release-$(date +%F_%H%M).apk"'
+  artifacts:
+    paths:
+    - 20_Library/app/build/outputs/
+  rules:
+    # runs only on main branch (!tag)
+    - if: '$CI_COMMIT_TAG =~ "/^$/" && $CI_COMMIT_REF_NAME =~ "/^main$/"'
+      changes:
+        - 20_Library/**/*
+
+# create debug apk & upload to gitlab package registry
+assembleDebug:
+  stage: build
+  script:
+    - ./gradlew assembleDebug
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file app/build/outputs/apk/debug/app-debug.apk "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/library/${BUILD_VERSION}/library-debug-$(date +%F_%H%M).apk"'
+  artifacts:
+    paths:
+    - 20_Library/app/build/outputs/
+  rules:
+    # runs only on feature branch (!tag)
+    - if: '$CI_COMMIT_TAG =~ "/^$/" && $CI_COMMIT_REF_NAME !~ "/^main$/"'
+      changes:
+        - 20_Library/**/*
+
+# run all tests
+debugTests:
+  stage: test
+  script:
+    - ./gradlew -Pci --console=plain :app:testDebug
+  rules:
+    # runs only on feature branch (!tag)
+    - if: '$CI_COMMIT_TAG =~ "/^$/" && $CI_COMMIT_REF_NAME !~ "/^main$/"'
+      changes:
+        - 20_Library/**/*
