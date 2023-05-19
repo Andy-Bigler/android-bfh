@@ -18,7 +18,7 @@ To verify the APK signature, you have to use the `apksigner` binary instead of `
 Verify signature:
 
 ```bash
-apksigner verify --verbose library-release-2023-05-19_2259.apk
+apksigner verify --verbose library-release-2023-05-19_2312.apk
 ```
 
 ## How to use
