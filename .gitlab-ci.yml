@@ -64,7 +64,6 @@ assembleRelease:
   stage: build
   script:
     - ./gradlew assembleRelease
-    - ls -al app/build/outputs/apk/release/
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file app/build/outputs/apk/release/app-release.apk "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/library/${BUILD_VERSION}/library-release-$(date +%F_%H%M).apk"'
   artifacts:
     paths:

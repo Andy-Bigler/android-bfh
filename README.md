@@ -2,10 +2,13 @@
 
 <img src="./assets/logo.png" height=150px>
 
+Track your favorite books on your phone.
+
 ## APK
 
-Currently, the release build is not working.
-Please get the APK from here **20_Library/app/release/app-release.apk**
+There are _Debug APKs_ (**library-debug-\$date.apk**) and _Release APKs_ (**library-release-\$date.apk**) under following link:
+
+- [Packages](https://gitlab.ti.bfh.ch/bigla2/android_programming/-/packages/939)
 
 ## Signing
 
@@ -15,7 +18,7 @@ To verify the APK signature, you have to use the `apksigner` binary instead of `
 Verify signature:
 
 ```bash
-apksigner verify --verbose app-release.apk
+apksigner verify --verbose library-release-2023-05-19_2259.apk
 ```
 
 ## How to use
@@ -42,6 +45,10 @@ Just put it somewhere on your phone and import it from the app.
 ### Edit an existing book
 
 <img src="./assets/edit.jpg" height=300px>
+
+## Credits
+
+Thanks to Jan Fuhrer for helping me with CI/CD.
 
 ## Disclaimer
 
