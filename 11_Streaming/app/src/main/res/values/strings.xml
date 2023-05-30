@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Streaming</string>
+    <string name="streaming">Streaming</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="stream">https://stream.srg-ssr.ch/m/drs3/mp3_128</string>
+    <string name="streaming_started">Streaming started...</string>
+    <string name="streaming_finished">Streaming finished...</string>
+    <string name="error_occurred_while_streaming">Error occurred while streaming...</string>
+    <string name="streaming_stopped">Streaming stopped...</string>
+</resources>
